@@ -1,7 +1,6 @@
-import express from 'express'
-import logger from './logger'
-
-const app = express()
+import app from './app'
+import 'dotenv/config'
+import logger from './shared/lib/logger'
 
 const PORT = process.env.PORT || 3000
 

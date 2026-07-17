@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node dist/server.js",
-    "dev": "nodemon src/server.ts | npx pino-pretty",
+    "dev": "nodemon --exec tsx src/server.ts | npx pino-pretty",
     "test": "jest --coverage",
     "build": "tsc",
     "format-fix": "prettier . --write",
@@ -31,6 +31,7 @@
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-dist": "^5.32.8",
     "swagger-ui-express": "^5.0.1",
+    "tsx": "^4.23.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -54,7 +55,6 @@
     "prettier": "^3.9.0",
     "prisma": "^7.8.0",
     "ts-jest": "^29.4.11",
-    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.0"
