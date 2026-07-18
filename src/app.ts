@@ -13,6 +13,32 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API for managing products',
     },
+    components: {
+      schemas: {
+        CreateProductDTO: {
+          type: 'object',
+          required: ['name', 'quantity', 'description', 'price'],
+          properties: {
+            name: { type: 'string', minLength: 1, example: 'Notebook' },
+            quantity: { type: 'integer', minimum: 0, example: 10 },
+            description: { type: 'string', minLength: 1, example: 'Notebook gamer' },
+            price: { type: 'number', minimum: 0, example: 4999.9 },
+          },
+        },
+        ProductResponseDTO: {
+          type: 'object',
+          required: ['id', 'name', 'description', 'quantity', 'price', 'inStock'],
+          properties: {
+            id: { type: 'string', format: 'uuid', example: '550e8400-e29b-41d4-a716-446655440000' },
+            name: { type: 'string', example: 'Notebook' },
+            description: { type: 'string', example: 'Notebook gamer' },
+            quantity: { type: 'integer', example: 10 },
+            price: { type: 'number', example: 4999.9 },
+            inStock: { type: 'boolean', example: true },
+          },
+        },
+      },
+    },
   },
   apis: ['./src/modules/product/product.routes.ts', './src/modules/product/product.schema.ts'],
 }
