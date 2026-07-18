@@ -1,6 +1,11 @@
 import logger from '../../shared/lib/logger'
 import { IProductRepository } from './product.repository'
-import { CreateProductDTO, ListProductsQueryDTO, ProductResponseDTO } from './product.schema'
+import {
+  CreateProductDTO,
+  ListProductsQueryDTO,
+  ProductResponseDTO,
+  UpdateProductBodyDTO,
+} from './product.schema'
 
 export class NotFoundError extends Error {
   constructor(message: string) {
@@ -19,11 +24,10 @@ export class ProductService {
   }
 
   async listProducts(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]> {
-    const products = await this.productRepository.list(filters)
-    return products.data
+    return this.productRepository.list(filters)
   }
 
-  async listProductById(id: string): Promise<ProductResponseDTO | null> {
+  async listProductById(id: string): Promise<ProductResponseDTO> {
     const product = await this.productRepository.findById(id)
     if (!product) {
       throw new NotFoundError(`Product not found with ID: ${id}`)
@@ -31,7 +35,7 @@ export class ProductService {
     return product
   }
 
-  async updateProduct(id: string, data: Partial<CreateProductDTO>): Promise<ProductResponseDTO> {
+  async updateProduct(id: string, data: UpdateProductBodyDTO): Promise<ProductResponseDTO> {
     const existingProduct = await this.productRepository.findById(id)
     if (!existingProduct) {
       throw new NotFoundError(`Product not found with ID: ${id}`)
@@ -44,8 +48,7 @@ export class ProductService {
   async deleteProduct(id: string): Promise<void> {
     const existingProduct = await this.productRepository.findById(id)
     if (!existingProduct) {
-      logger.info(`Produto não encontrado com ID: ${id}, verifique se o ID está correto.`)
-      throw Object.assign(new Error('Produto não encontrado'), { status: 404 })
+      throw new NotFoundError(`Product not found with ID: ${id}`)
     }
     await this.productRepository.delete(id)
     logger.info(`Product deleted with ID: ${id}`)

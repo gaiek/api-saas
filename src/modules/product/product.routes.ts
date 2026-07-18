@@ -155,7 +155,7 @@ router.get('/products/:id', (req, res) => productController.listProductByIdContr
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateProductDTO'
+ *             $ref: '#/components/schemas/UpdateProductDTO'
  *     responses:
  *       200:
  *         description: Product updated successfully

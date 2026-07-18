@@ -1,35 +1,19 @@
 import { prismaClient } from '../../shared/database/database'
-import { Category } from '../../shared/types/category'
 import { Prisma } from '../../generated/prisma/client'
 import {
   ProductResponseDTO,
-  DeleteProductParamsDTO,
   ListProductsQueryDTO,
   CreateProductDTO,
+  UpdateProductBodyDTO,
 } from './product.schema'
 import logger from '../../shared/lib/logger'
-
-export type UpdateProduct = {
-  name?: string
-  description?: string
-  price?: number
-  category?: Category
-}
-
-export interface PaginatedResponse<T> {
-  data: T[]
-  total: number
-  page: number
-  pageSize: number
-  totalPages: number
-}
 
 export interface IProductRepository {
   create(product: CreateProductDTO): Promise<ProductResponseDTO>
   findById(id: string): Promise<ProductResponseDTO | null>
-  update(id: string, product: UpdateProduct): Promise<ProductResponseDTO>
-  delete(id: string): Promise<DeleteProductParamsDTO>
-  list(filters: ListProductsQueryDTO): Promise<PaginatedResponse<ProductResponseDTO>>
+  update(id: string, product: UpdateProductBodyDTO): Promise<ProductResponseDTO>
+  delete(id: string): Promise<void>
+  list(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]>
 }
 
 export class ProductRepository implements IProductRepository {
@@ -50,7 +34,7 @@ export class ProductRepository implements IProductRepository {
     }
   }
 
-  async list(filters: ListProductsQueryDTO): Promise<PaginatedResponse<ProductResponseDTO>> {
+  async list(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]> {
     const { period, startDate, endDate, pageSize = 10, page = 1 } = filters
 
     const where: Prisma.ProductWhereInput = {}
@@ -90,26 +74,17 @@ export class ProductRepository implements IProductRepository {
       }
     }
 
-    const [products, total] = await Promise.all([
-      prismaClient.product.findMany({
-        where,
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
-      prismaClient.product.count({ where }),
-    ])
+    const products = await prismaClient.product.findMany({
+      where,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    })
 
-    return {
-      data: products.map(product => ({
-        ...product,
-        price: Number(product.price),
-        inStock: product.quantity > 0,
-      })),
-      total,
-      page,
-      pageSize,
-      totalPages: Math.ceil(total / pageSize),
-    }
+    return products.map(product => ({
+      ...product,
+      price: Number(product.price),
+      inStock: product.quantity > 0,
+    }))
   }
 
   async findById(id: string): Promise<ProductResponseDTO | null> {
@@ -128,7 +103,7 @@ export class ProductRepository implements IProductRepository {
     }
   }
 
-  async update(id: string, data: UpdateProduct): Promise<ProductResponseDTO> {
+  async update(id: string, data: UpdateProductBodyDTO): Promise<ProductResponseDTO> {
     const product = await prismaClient.product.update({
       where: { id },
       data: {
@@ -143,12 +118,11 @@ export class ProductRepository implements IProductRepository {
     }
   }
 
-  async delete(id: string): Promise<DeleteProductParamsDTO> {
+  async delete(id: string): Promise<void> {
     try {
       await prismaClient.product.delete({
         where: { id },
       })
-      return { id }
     } catch (error) {
       logger.error(`Error deleting product ID ${id}:`)
       throw error

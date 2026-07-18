@@ -25,6 +25,15 @@ const swaggerOptions = {
             price: { type: 'number', minimum: 0, example: 4999.9 },
           },
         },
+        UpdateProductDTO: {
+          type: 'object',
+          minProperties: 1,
+          properties: {
+            name: { type: 'string', minLength: 1, example: 'Notebook atualizado' },
+            description: { type: 'string', minLength: 1, example: 'Descricao atualizada' },
+            price: { type: 'number', minimum: 0, example: 3999.9 },
+          },
+        },
         ProductResponseDTO: {
           type: 'object',
           required: ['id', 'name', 'description', 'quantity', 'price', 'inStock'],

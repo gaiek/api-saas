@@ -18,6 +18,7 @@ export const updateProductSchema = z.object({
       name: z.string().min(1, 'Name is required').optional(),
       description: z.string().min(1, 'Description is required').optional(),
       price: z.number().min(0, 'Price must be a positive number').optional(),
+      quantity: z.number().int().min(0, 'Quantity must be a positive integer').optional(),
     })
     .refine(data => Object.keys(data).length > 0, {
       message: 'At least one field must be provided for update',
