@@ -10,10 +10,10 @@ import logger from '../../shared/lib/logger'
 
 export interface IProductRepository {
   create(product: CreateProductDTO): Promise<ProductResponseDTO>
-  findById(id: string): Promise<ProductResponseDTO | null>
+  findUnique(id: string): Promise<ProductResponseDTO | null>
   update(id: string, product: UpdateProductBodyDTO): Promise<ProductResponseDTO>
   delete(id: string): Promise<void>
-  list(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]>
+  findMany(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]>
 }
 
 export class ProductRepository implements IProductRepository {
@@ -34,7 +34,7 @@ export class ProductRepository implements IProductRepository {
     }
   }
 
-  async list(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]> {
+  async findMany(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]> {
     const { period, startDate, endDate, pageSize = 10, page = 1 } = filters
 
     const where: Prisma.ProductWhereInput = {}
@@ -87,7 +87,7 @@ export class ProductRepository implements IProductRepository {
     }))
   }
 
-  async findById(id: string): Promise<ProductResponseDTO | null> {
+  async findUnique(id: string): Promise<ProductResponseDTO | null> {
     const product = await prismaClient.product.findUnique({
       where: { id },
     })
