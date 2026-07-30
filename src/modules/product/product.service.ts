@@ -24,11 +24,11 @@ export class ProductService {
   }
 
   async listProducts(filters: ListProductsQueryDTO): Promise<ProductResponseDTO[]> {
-    return this.productRepository.list(filters)
+    return this.productRepository.findMany(filters)
   }
 
   async listProductById(id: string): Promise<ProductResponseDTO> {
-    const product = await this.productRepository.findById(id)
+    const product = await this.productRepository.findUnique(id)
     if (!product) {
       throw new NotFoundError(`Product not found with ID: ${id}`)
     }
@@ -36,7 +36,7 @@ export class ProductService {
   }
 
   async updateProduct(id: string, data: UpdateProductBodyDTO): Promise<ProductResponseDTO> {
-    const existingProduct = await this.productRepository.findById(id)
+    const existingProduct = await this.productRepository.findUnique(id)
     if (!existingProduct) {
       throw new NotFoundError(`Product not found with ID: ${id}`)
     }
@@ -46,7 +46,7 @@ export class ProductService {
   }
 
   async deleteProduct(id: string): Promise<void> {
-    const existingProduct = await this.productRepository.findById(id)
+    const existingProduct = await this.productRepository.findUnique(id)
     if (!existingProduct) {
       throw new NotFoundError(`Product not found with ID: ${id}`)
     }
