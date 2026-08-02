@@ -226,4 +226,4 @@ router.patch('/products/:id', (req, res) => productController.updateProductContr
  */
 router.delete('/products/:id', (req, res) => productController.deleteProductController(req, res))
 
-export default router
+export { router as productRouter }

@@ -1,23 +1,27 @@
 import { z } from 'zod'
 
 export const createAccountUserSchema = z.object({
-  body: z.object({
-    name: z.string().trim().min(2),
-    email: z.string().email(),
-    password: z.string().min(6),
-  }),
+  name: z.string().trim().min(2),
+  email: z.string().email(),
+  password: z.string().min(6),
 })
 
-export type CreateAccountUserDTO = z.infer<typeof createAccountUserSchema>['body']
+export type CreateAccountUserDTO = z.infer<typeof createAccountUserSchema>
 
 export const loginAccountUserSchema = z.object({
-  body: z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+})
+
+export type LoginAccountUserDTO = z.infer<typeof loginAccountUserSchema>
+
+export const getAccountByEmailSchema = z.object({
+  params: z.object({
     email: z.string().email(),
-    password: z.string().min(6),
   }),
 })
 
-export type LoginAccountUserDTO = z.infer<typeof loginAccountUserSchema>['body']
+export type GetAccountByEmailParamsDTO = z.infer<typeof getAccountByEmailSchema>['params']
 
 export const updateAccountUserSchema = z.object({
   body: z
@@ -30,7 +34,7 @@ export const updateAccountUserSchema = z.object({
       message: 'At least one field must be provided for update',
     }),
   params: z.object({
-    id: z.string().uuid('Invalid account ID'), // Mensagens customizadas sempre ajudam o front-end!
+    id: z.string().uuid('Invalid account ID'),
   }),
 })
 
@@ -62,3 +66,8 @@ export const accountUserResponseSchema = z.object({
 })
 
 export type AccountUserResponseDTO = z.infer<typeof accountUserResponseSchema>
+
+export type LoginResponseDTO = {
+  user: AccountUserResponseDTO
+  token: string
+}

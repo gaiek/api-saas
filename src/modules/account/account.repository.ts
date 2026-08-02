@@ -1,8 +1,10 @@
+import { Account } from '../../generated/prisma/browser'
 import { prismaClient } from '../../shared/database/database'
 
 import {
   AccountUserResponseDTO,
   CreateAccountUserDTO,
+  LoginAccountUserDTO,
   UpdateAccountUserBodyDTO,
 } from './account.schema'
 
@@ -13,6 +15,7 @@ export interface IAccountRepository {
   delete(id: string): Promise<void>
   findByEmail(email: string): Promise<AccountUserResponseDTO | null>
   findMany(): Promise<AccountUserResponseDTO[]>
+  findForAuth(email: string): Promise<Account | null>
 }
 
 export class AccountRepository implements IAccountRepository {
@@ -97,5 +100,15 @@ export class AccountRepository implements IAccountRepository {
       createdAt: account.createdAt.toISOString(),
       updatedAt: account.updatedAt.toISOString(),
     }))
+  }
+
+  async findForAuth(email: string): Promise<Account | null> {
+    const account = await prismaClient.account.findUnique({
+      where: { email },
+    })
+
+    if (!account) return null
+
+    return account
   }
 }
