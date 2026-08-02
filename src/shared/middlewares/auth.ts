@@ -24,7 +24,8 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
   try {
     const secretKey = process.env.JWT_SECRET
     if (!secretKey) {
-      throw new Error('JWT_SECRET not configured')
+      logger.error('[Auth Middleware] JWT_SECRET not configured')
+      return res.status(500).json({ message: 'Authentication not configured' })
     }
     const decoded = jwt.verify(token, secretKey) as JwtPayload
     req.user = decoded
