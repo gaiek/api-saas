@@ -1,4 +1,4 @@
-import { Account } from '../../generated/prisma/browser'
+import { Account } from '../../generated/prisma/client'
 import { prismaClient } from '../../shared/database/database'
 
 import {
