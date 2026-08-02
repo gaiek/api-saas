@@ -40,7 +40,7 @@ const router = Router()
  *                   type: string
  *                   example: Internal server error
  */
-router.post('/products', (req, res) => productController.createProductController(req, res))
+router.post('/', (req, res) => productController.createProductController(req, res))
 
 /**
  * @swagger
@@ -100,7 +100,7 @@ router.post('/products', (req, res) => productController.createProductController
  *                   type: string
  *                   example: Internal server error
  */
-router.get('/products', (req, res) => productController.listProductsController(req, res))
+router.get('/', (req, res) => productController.listProductsController(req, res))
 
 /**
  * @swagger
@@ -134,7 +134,7 @@ router.get('/products', (req, res) => productController.listProductsController(r
  *                   type: string
  *                   example: Product not found
  */
-router.get('/products/:id', (req, res) => productController.listProductByIdController(req, res))
+router.get('//:id', (req, res) => productController.listProductByIdController(req, res))
 
 /**
  * @swagger
@@ -184,7 +184,7 @@ router.get('/products/:id', (req, res) => productController.listProductByIdContr
  *                   type: string
  *                   example: Internal server error
  */
-router.patch('/products/:id', (req, res) => productController.updateProductController(req, res))
+router.patch('//:id', (req, res) => productController.updateProductController(req, res))
 
 /**
  * @swagger
@@ -224,6 +224,6 @@ router.patch('/products/:id', (req, res) => productController.updateProductContr
  *                   type: string
  *                   example: Internal server error
  */
-router.delete('/products/:id', (req, res) => productController.deleteProductController(req, res))
+router.delete('//:id', (req, res) => productController.deleteProductController(req, res))
 
-export default router
+export { router as productRouter }
