@@ -79,31 +79,145 @@ const swaggerOptions = {
           type: 'object',
           required: ['name', 'quantity', 'description', 'price'],
           properties: {
-            name: { type: 'string', minLength: 1, example: 'Notebook' },
-            quantity: { type: 'integer', minimum: 0, example: 10 },
-            description: { type: 'string', minLength: 1, example: 'Notebook gamer' },
-            price: { type: 'number', minimum: 0, example: 4999.9 },
+            name: {
+              type: 'string',
+              minLength: 1,
+              example: 'Notebook Gamer',
+              description: 'Product name',
+            },
+            quantity: {
+              type: 'integer',
+              minimum: 0,
+              example: 10,
+              description: 'Available quantity in stock',
+            },
+            description: {
+              type: 'string',
+              minLength: 1,
+              example: 'Notebook Gamer com RTX 4060',
+              description: 'Product description',
+            },
+            price: {
+              type: 'number',
+              minimum: 0,
+              example: 4999.9,
+              description: 'Product price in BRL',
+            },
           },
         },
         UpdateProductDTO: {
           type: 'object',
           minProperties: 1,
           properties: {
-            name: { type: 'string', minLength: 1, example: 'Notebook atualizado' },
-            description: { type: 'string', minLength: 1, example: 'Descricao atualizada' },
-            price: { type: 'number', minimum: 0, example: 3999.9 },
+            name: {
+              type: 'string',
+              minLength: 1,
+              example: 'Notebook Gamer Pro',
+            },
+            description: {
+              type: 'string',
+              minLength: 1,
+              example: 'Descrição atualizada do produto',
+            },
+            quantity: {
+              type: 'integer',
+              minimum: 0,
+              example: 15,
+            },
+            price: {
+              type: 'number',
+              minimum: 0,
+              example: 3999.9,
+            },
           },
+          description: 'At least one field must be provided',
         },
         ProductResponseDTO: {
           type: 'object',
           required: ['id', 'name', 'description', 'quantity', 'price', 'inStock'],
           properties: {
-            id: { type: 'string', format: 'uuid', example: '550e8400-e29b-41d4-a716-446655440000' },
-            name: { type: 'string', example: 'Notebook' },
-            description: { type: 'string', example: 'Notebook gamer' },
-            quantity: { type: 'integer', example: 10 },
-            price: { type: 'number', example: 4999.9 },
-            inStock: { type: 'boolean', example: true },
+            id: {
+              type: 'string',
+              format: 'uuid',
+              example: '550e8400-e29b-41d4-a716-446655440000',
+            },
+            name: {
+              type: 'string',
+              example: 'Notebook Gamer',
+            },
+            description: {
+              type: 'string',
+              example: 'Notebook Gamer com RTX 4060',
+            },
+            quantity: {
+              type: 'integer',
+              example: 10,
+            },
+            price: {
+              type: 'number',
+              example: 4999.9,
+            },
+            inStock: {
+              type: 'boolean',
+              example: true,
+              description: 'True if quantity > 0',
+            },
+          },
+        },
+        ListProductsQueryDTO: {
+          type: 'object',
+          properties: {
+            period: {
+              type: 'string',
+              enum: ['TODAY', 'WEEK', 'MONTH', 'CUSTOM'],
+              example: 'TODAY',
+              description: 'Filter products by creation period',
+            },
+            startDate: {
+              type: 'string',
+              format: 'date',
+              example: '2024-01-01',
+              description: 'Start date for CUSTOM period (YYYY-MM-DD)',
+            },
+            endDate: {
+              type: 'string',
+              format: 'date',
+              example: '2024-01-31',
+              description: 'End date for CUSTOM period (YYYY-MM-DD)',
+            },
+            page: {
+              type: 'integer',
+              minimum: 1,
+              example: 1,
+              description: 'Page number (1-indexed)',
+            },
+            pageSize: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 100,
+              example: 10,
+              description: 'Number of items per page (max 100)',
+            },
+          },
+        },
+        ProductListResponseDTO: {
+          type: 'object',
+          properties: {
+            data: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/ProductResponseDTO',
+              },
+            },
+            pagination: {
+              type: 'object',
+              properties: {
+                page: { type: 'integer', example: 1 },
+                pageSize: { type: 'integer', example: 10 },
+                total: { type: 'integer', example: 100 },
+                totalPages: { type: 'integer', example: 10 },
+              },
+            },
           },
         },
       },

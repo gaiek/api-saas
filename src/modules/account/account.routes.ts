@@ -34,6 +34,8 @@ const router = Router()
  *         description: Validation failed
  *       409:
  *         description: Email already in use
+ *       500:
+ *         description: Internal server error
  */
 router.post('/accounts', (req, res) => accountController.createAccountController(req, res))
 
@@ -69,6 +71,8 @@ router.post('/accounts', (req, res) => accountController.createAccountController
  *               $ref: '#/components/schemas/LoginResponseDTO'
  *       401:
  *         description: Invalid email or password
+ *       500:
+ *         description: Internal server error
  */
 router.post('/accounts/login', (req, res) => accountController.loginAccountController(req, res))
 
@@ -90,6 +94,10 @@ router.post('/accounts/login', (req, res) => accountController.loginAccountContr
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/AccountResponseDTO'
+ *       400:
+ *         description: Validation failed
+ *       409:
+ *         description: Conflict error
  *       500:
  *         description: Internal server error
  */
@@ -121,8 +129,12 @@ router.get('/accounts', authenticate, (req, res) =>
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/AccountResponseDTO'
+ *       400:
+ *         description: Validation failed
  *       404:
  *         description: Account not found
+ *       500:
+ *         description: Internal server error
  */
 router.get('/accounts/:id', authenticate, (req, res) =>
   accountController.listAccountByIdController(req, res),
@@ -154,6 +166,10 @@ router.get('/accounts/:id', authenticate, (req, res) =>
  *               $ref: '#/components/schemas/AccountResponseDTO'
  *       404:
  *         description: Account not found
+ *       400:
+ *         description: Validation failed
+ *       500:
+ *         description: Internal server error
  */
 router.get('/accounts/email/:email', authenticate, (req, res) =>
   accountController.listAccountByEmailController(req, res),
@@ -189,8 +205,12 @@ router.get('/accounts/email/:email', authenticate, (req, res) =>
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/AccountResponseDTO'
+ *       400:
+ *         description: Validation failed
  *       404:
  *         description: Account not found
+ *       500:
+ *         description: Internal server error
  */
 router.put('/accounts/:id', authenticate, (req, res) =>
   accountController.updateAccountController(req, res),
@@ -218,6 +238,10 @@ router.put('/accounts/:id', authenticate, (req, res) =>
  *         description: Account deleted successfully
  *       404:
  *         description: Account not found
+ *       400:
+ *         description: Validation failed
+ *       500:
+ *         description: Internal server error
  */
 router.delete('/accounts/:id', authenticate, (req, res) =>
   accountController.deleteAccountController(req, res),
