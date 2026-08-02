@@ -12,7 +12,7 @@ const router = Router()
 
 /**
  * @swagger
- * /api/accounts/accounts:
+ * /api/accounts:
  *   post:
  *     summary: Create a new account
  *     tags:
@@ -37,11 +37,11 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
-router.post('/accounts', (req, res) => accountController.createAccountController(req, res))
+router.post('/', (req, res) => accountController.createAccountController(req, res))
 
 /**
  * @swagger
- * /api/accounts/accounts/login:
+ * /api/accounts/login:
  *   post:
  *     summary: Authenticate an account
  *     tags:
@@ -74,11 +74,11 @@ router.post('/accounts', (req, res) => accountController.createAccountController
  *       500:
  *         description: Internal server error
  */
-router.post('/accounts/login', (req, res) => accountController.loginAccountController(req, res))
+router.post('//login', (req, res) => accountController.loginAccountController(req, res))
 
 /**
  * @swagger
- * /api/accounts/accounts:
+ * /api/accounts:
  *   get:
  *     summary: List all accounts
  *     tags:
@@ -101,13 +101,11 @@ router.post('/accounts/login', (req, res) => accountController.loginAccountContr
  *       500:
  *         description: Internal server error
  */
-router.get('/accounts', authenticate, (req, res) =>
-  accountController.listAccountsController(req, res),
-)
+router.get('/', authenticate, (req, res) => accountController.listAccountsController(req, res))
 
 /**
  * @swagger
- * /api/accounts/accounts/{id}:
+ * /api/accounts/{id}:
  *   get:
  *     summary: Get an account by ID
  *     tags:
@@ -136,13 +134,13 @@ router.get('/accounts', authenticate, (req, res) =>
  *       500:
  *         description: Internal server error
  */
-router.get('/accounts/:id', authenticate, (req, res) =>
+router.get('//:id', authenticate, (req, res) =>
   accountController.listAccountByIdController(req, res),
 )
 
 /**
  * @swagger
- * /api/accounts/accounts/email/{email}:
+ * /api/accounts/email/{email}:
  *   get:
  *     summary: Get an account by email
  *     tags:
@@ -171,13 +169,13 @@ router.get('/accounts/:id', authenticate, (req, res) =>
  *       500:
  *         description: Internal server error
  */
-router.get('/accounts/email/:email', authenticate, (req, res) =>
+router.get('//email/:email', authenticate, (req, res) =>
   accountController.listAccountByEmailController(req, res),
 )
 
 /**
  * @swagger
- * /api/accounts/accounts/{id}:
+ * /api/accounts/{id}:
  *   put:
  *     summary: Update an account by ID
  *     tags:
@@ -212,13 +210,11 @@ router.get('/accounts/email/:email', authenticate, (req, res) =>
  *       500:
  *         description: Internal server error
  */
-router.put('/accounts/:id', authenticate, (req, res) =>
-  accountController.updateAccountController(req, res),
-)
+router.put('//:id', authenticate, (req, res) => accountController.updateAccountController(req, res))
 
 /**
  * @swagger
- * /api/accounts/accounts/{id}:
+ * /api/accounts/{id}:
  *   delete:
  *     summary: Delete an account by ID
  *     tags:
@@ -243,7 +239,7 @@ router.put('/accounts/:id', authenticate, (req, res) =>
  *       500:
  *         description: Internal server error
  */
-router.delete('/accounts/:id', authenticate, (req, res) =>
+router.delete('//:id', authenticate, (req, res) =>
   accountController.deleteAccountController(req, res),
 )
 

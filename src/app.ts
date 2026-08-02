@@ -236,4 +236,7 @@ app.use(express.json())
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
+app.use('/api/products', productRouter)
+app.use('/api/accounts', accountRouter)
+
 export default app
