@@ -1,4 +1,4 @@
-import { AccountRepository } from './account.repository'
+import { IAccountRepository } from './account.repository'
 import logger from '../../shared/lib/logger'
 import * as bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -24,7 +24,7 @@ export class ConflictError extends Error {
 }
 
 export class AccountService {
-  constructor(private readonly accountRepository: AccountRepository) {}
+  constructor(private readonly accountRepository: IAccountRepository) {}
 
   async createAccount(data: CreateAccountUserDTO): Promise<AccountUserResponseDTO> {
     const emailAlreadyInUse = await this.accountRepository.findByEmail(data.email)

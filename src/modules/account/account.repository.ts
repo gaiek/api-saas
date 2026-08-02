@@ -4,7 +4,6 @@ import { prismaClient } from '../../shared/database/database'
 import {
   AccountUserResponseDTO,
   CreateAccountUserDTO,
-  LoginAccountUserDTO,
   UpdateAccountUserBodyDTO,
 } from './account.schema'
 
