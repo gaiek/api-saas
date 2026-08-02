@@ -16,9 +16,9 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
     return res.status(401).json({ message: 'Authorization header missing' })
   }
 
-  const token = authHeader.split(' ')[1]
-  if (!token) {
-    return res.status(401).json({ message: 'Token missing' })
+  const [scheme, token] = authHeader.split(' ')
+  if (scheme !== 'Bearer' || !token) {
+    return res.status(401).json({ message: 'Invalid authorization header format' })
   }
 
   try {
