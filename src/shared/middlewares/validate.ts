@@ -14,11 +14,8 @@ export const validate = (schema: ZodTypeAny) => {
     } catch (error) {
       if (error instanceof ZodError) {
         return res.status(400).json({
-          message: 'Validation error',
-          errors: error.issues.map(err => ({
-            field: err.path.join('.'),
-            message: err.message,
-          })),
+          message: 'Invalid request data',
+          errors: error.issues,
         })
       }
       logger.error({ error }, 'Schema validation failed unexpectedly')
