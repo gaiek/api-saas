@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import { ZodError, ZodObject } from 'zod'
+import { ZodError, ZodTypeAny } from 'zod'
 import logger from '../lib/logger'
 
-export const validate = (schema: ZodObject) => {
+export const validate = (schema: ZodTypeAny) => {
   async function validateMiddleware(req: Request, res: Response, next: NextFunction) {
     try {
       await schema.parseAsync({
